@@ -22,14 +22,13 @@ void enqueue(queue *q, int x)
   //add node to end
   qnode *element = malloc(sizeof(qnode));
   element->next = q->rear;
-  element->data = x;
   q->rear = element;
-  
-  q->front = q->rear;
-  for(int i = 0; i<q->size; i++){
-    q->front = q->front->next;
-  }
+  element->data = x;
   q->size++;
+  if(q->size == 1){
+    q->front = element;
+  }
+  
 }
 
 int dequeue(queue *q)
@@ -37,14 +36,12 @@ int dequeue(queue *q)
   // Add your dequeue function
   assert(q->size != 0);
   int x = q->front->data;
-
-  q->front = q->rear;
-  for(int i = 0; i<q->size; i++){
-    //rintf("before: q.front.data = %d\t", q->front->data);
-    if(q->front->next != NULL){
-      q->front = q->front->next;
-    }
-  }
   q->size--;
+  if(q->size == 0){
+    q->rear = NULL;
+    q->front = NULL;
+  }else if(q->size >= 1){
+    q->front->next = q->front;
+  }
   return x;
 }
